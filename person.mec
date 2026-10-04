@@ -1,0 +1,90 @@
+-- Schema and joined views; loaded after the generated data tables.
+
+schema-table := | table-name<string> primary-key<string> purpose<string> |
+                 | "person"               "person-id"       "Stable person profiles" |
+                 | "attribute"            "attribute-id"    "Reusable person attributes" |
+                 | "person-attribute"     "person-id,attribute-id" "Person to attribute links" |
+                 | "address-log"          "address-id"      "Address history" |
+                 | "interaction-log"      "interaction-id"  "Contact history" |
+                 | "relationship"         "relationship-id" "People graph edges" |
+                 | "lifecycle-policy"     "status"           "Contact thresholds" |
+                 | "lifecycle-transition" "from-status,event-kind" "Allowed state changes" |
+                 | "lifecycle-event"     "event-id"         "Recorded lifecycle events" |
+                 | "lifecycle-state"     "person-id"        "Current lifecycle view" |
+
+schema-field := | table-name<string> field-name<string> field-type<string> |
+                 | "person"               "person-id"             "u64" |
+                 | "person"               "name"                  "string" |
+                 | "person"               "status"                "string" |
+                 | "person"               "birthdate"              "string" |
+                 | "person"               "background"             "string" |
+                 | "attribute"            "attribute-id"           "u64" |
+                 | "attribute"            "category"                "string" |
+                 | "attribute"            "value"                   "string" |
+                 | "person-attribute"     "person-id"             "u64" |
+                 | "person-attribute"     "attribute-id"          "u64" |
+                 | "person-attribute"     "source"                "string" |
+                 | "person-attribute"     "confidence"            "f64" |
+                 | "address-log"          "address-id"            "u64" |
+                 | "address-log"          "person-id"             "u64" |
+                 | "address-log"          "timestamp"              "string" |
+                 | "address-log"          "date-day"               "u64" |
+                 | "address-log"          "address"                "string" |
+                 | "address-log"          "source"                 "string" |
+                 | "interaction-log"      "interaction-id"         "u64" |
+                 | "interaction-log"      "person-id"             "u64" |
+                 | "interaction-log"      "timestamp"              "string" |
+                 | "interaction-log"      "date-day"               "u64" |
+                 | "interaction-log"      "kind"                   "string" |
+                 | "interaction-log"      "summary"                "string" |
+                 | "interaction-log"      "follow-up-date"         "string" |
+                 | "relationship"         "relationship-id"        "u64" |
+                 | "relationship"         "from-person-id"         "u64" |
+                 | "relationship"         "to-person-id"           "u64" |
+                 | "relationship"         "kind"                   "string" |
+                 | "relationship"         "strength"               "string" |
+                 | "relationship"         "note"                   "string" |
+                 | "lifecycle-policy"     "status"                 "string" |
+                 | "lifecycle-policy"     "max-days-since-contact" "u64" |
+                 | "lifecycle-policy"     "reminder-kind"           "string" |
+                 | "lifecycle-policy"     "note"                   "string" |
+                 | "lifecycle-transition" "from-status"            "string" |
+                 | "lifecycle-transition" "event-kind"             "string" |
+                 | "lifecycle-transition" "to-status"               "string" |
+                 | "lifecycle-event"      "event-id"                "u64" |
+                 | "lifecycle-event"      "person-id"               "u64" |
+                 | "lifecycle-event"      "timestamp"                "string" |
+                 | "lifecycle-event"      "date-day"                 "u64" |
+                 | "lifecycle-event"      "event-kind"               "string" |
+                 | "lifecycle-event"      "note"                     "string" |
+                 | "lifecycle-state"      "person-id"               "u64" |
+                 | "lifecycle-state"      "name"                    "string" |
+                 | "lifecycle-state"      "current-status"           "string" |
+                 | "lifecycle-state"      "recommended-event"       "string" |
+                 | "lifecycle-state"      "reason"                  "string" |
+
+schema-rule := | table-name<string> rule<string> |
+                | "person-attribute" "person-id plus attribute-id must be unique" |
+                | "person-attribute" "person-id references person.person-id" |
+                | "person-attribute" "attribute-id references attribute.attribute-id" |
+                | "address-log"      "person-id references person.person-id" |
+                | "interaction-log"  "person-id references person.person-id" |
+                | "relationship"     "from-person-id references person.person-id" |
+                | "relationship"     "to-person-id references person.person-id" |
+                | "attribute"        "category plus value must be unique" |
+                | "relationship"     "people pair must be unique in either direction" |
+
+choose-number(flag<bool>, yes<u64>, no<u64>) => <u64>
+  ├ (true, yes, *) => yes
+  └ (false, *, no) => no.
+
+elapsed-days(today<u64>, recorded<u64>) => <u64>
+  └ (today, recorded) => choose-number(today >= recorded, today, recorded) - recorded.
+
+newer-record(target<u64>, owner<u64>, day<u64>, id<u64>, previous-day<u64>, previous-id<u64>, previous-row<u64>) => <bool>
+  └ (target, owner, day, id, previous-day, previous-id, previous-row) => (target == owner) && ((previous-row == 0u64) || (day > previous-day) || ((day == previous-day) && (id > previous-id))).
+
+contact-status(archived<bool>, known<bool>, days<u64>, active-limit<u64>, catchup-limit<u64>) => <u64>
+  └ (archived, known, days, active-limit, catchup-limit) => choose-number(archived, 4u64, choose-number(known, choose-number(days <= active-limit, 1u64, choose-number(days > catchup-limit, 3u64, 2u64)), 2u64)).
+
+person-attribute-details := person ⋈ person-attribute ⋈ attribute

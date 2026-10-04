@@ -1,0 +1,10 @@
+.mecb
+.generated/
+.backups/
+*.mcfg.lock
+*.mcfg.*.tmp
+/people.mcfg
+/data/
+.env
+.env.*
+!.env.example

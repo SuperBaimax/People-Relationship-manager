@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>People Relationship Manager</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="app-header">
+        <div>
+          <p class="eyebrow">Local relationship workspace</p>
+          <h1>People Relationship Manager</h1>
+          <p class="subtitle">Edit people and interactions. Records save to people.mcfg; Mech calculates your contact views.</p>
+        </div>
+        <div class="header-tools">
+          <div class="header-status">
+            <span class="status-dot"></span>
+            <span id="engine-status">Connecting to the local database…</span>
+          </div>
+          <div class="toolbar" aria-label="Workspace actions">
+            <button id="add-person" class="button primary" type="button">Add person</button>
+            <button id="export-data" class="button secondary" type="button">Export MCFG</button>
+            <label class="button secondary file-button">Import data<input id="import-data" type="file" accept=".mcfg,.json,text/plain,application/json" /></label>
+            <button id="reset-data" class="button quiet" type="button">Reload database</button>
+            <button id="recover-browser" class="button quiet" type="button" hidden>Import old browser save</button>
+            <button id="download-draft" class="button quiet" type="button" hidden>Download unsaved draft</button>
+          </div>
+          <span id="save-message" class="save-message" role="status">Workspace ready</span>
+        </div>
+      </header>
+
+      <section class="workspace" aria-label="Relationship map and selected person">
+        <section class="map-card" aria-labelledby="map-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Relationship graph</p>
+              <h2 id="map-title">People network</h2>
+            </div>
+            <span class="map-hint">Click a node to edit</span>
+          </div>
+          <div id="relationship-map" class="relationship-map" aria-live="polite"></div>
+        </section>
+
+        <aside id="person-panel" class="person-panel" aria-labelledby="person-name"></aside>
+      </section>
+
+      <footer class="app-footer">
+        <span>Local database · Mech-powered views · Manual refresh</span>
+        <span>Export MCFG to keep a portable copy of your database</span>
+      </footer>
+    </main>
+    <script src="database.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

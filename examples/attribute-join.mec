@@ -1,0 +1,14 @@
+person := | person-id<u64> name<string> |
+          | 1u64 "Mira Vale" |
+          | 2u64 "Jonah Reed" |
+
+attribute := | attribute-id<u64> category<string> value<string> |
+             | 4u64 "language" "English" |
+             | 5u64 "language" "Spanish" |
+
+person-attribute := | person-id<u64> attribute-id<u64> |
+                    | 1u64 4u64 |
+                    | 1u64 5u64 |
+                    | 2u64 4u64 |
+
+person-attribute-details := person ⋈ person-attribute ⋈ attribute

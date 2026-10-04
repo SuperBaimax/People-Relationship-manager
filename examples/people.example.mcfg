@@ -1,0 +1,80 @@
+-- Fictional demonstration records only; no real people or personal addresses.
+database := {
+  version: 1
+  person: [
+    { person-id: 1 name: "Mira Vale" status: "active" birthdate: "" background: "Fictional interface designer at Example Studio" }
+    { person-id: 2 name: "Jonah Reed" status: "active" birthdate: "" background: "Fictional software developer at Example Lab" }
+    { person-id: 3 name: "Sana Brooks" status: "active" birthdate: "" background: "Fictional community workshop organizer" }
+    { person-id: 4 name: "Theo Hart" status: "archived" birthdate: "" background: "Fictional technical writer; archived example" }
+    { person-id: 5 name: "Elena Moss" status: "active" birthdate: "" background: "Fictional visualization researcher; no contact history yet" }
+  ]
+  attribute: [
+    { attribute-id: 1 category: "skill" value: "Interface design" }
+    { attribute-id: 2 category: "skill" value: "Software development" }
+    { attribute-id: 3 category: "skill" value: "Event planning" }
+    { attribute-id: 4 category: "language" value: "English" }
+    { attribute-id: 5 category: "language" value: "Spanish" }
+    { attribute-id: 6 category: "skill" value: "Technical writing" }
+    { attribute-id: 7 category: "research-interest" value: "Data visualization" }
+    { attribute-id: 8 category: "project" value: "Example community atlas" }
+  ]
+  person-attribute: [
+    { person-id: 1 attribute-id: 1 source: "fictional-example" confidence: 1 }
+    { person-id: 1 attribute-id: 4 source: "fictional-example" confidence: 1 }
+    { person-id: 2 attribute-id: 2 source: "fictional-example" confidence: 1 }
+    { person-id: 2 attribute-id: 4 source: "fictional-example" confidence: 1 }
+    { person-id: 3 attribute-id: 3 source: "fictional-example" confidence: 1 }
+    { person-id: 3 attribute-id: 5 source: "fictional-example" confidence: 1 }
+    { person-id: 4 attribute-id: 6 source: "fictional-example" confidence: 1 }
+    { person-id: 4 attribute-id: 8 source: "fictional-example" confidence: 1 }
+    { person-id: 5 attribute-id: 7 source: "fictional-example" confidence: 1 }
+    { person-id: 5 attribute-id: 8 source: "fictional-example" confidence: 1 }
+  ]
+  address-log: [
+    { address-id: 1 person-id: 1 timestamp: "2026-09-01" date-day: 739860 address: "Example District A (fictional)" source: "fictional-example" }
+    { address-id: 2 person-id: 2 timestamp: "2026-09-01" date-day: 739860 address: "Example District B (fictional)" source: "fictional-example" }
+    { address-id: 3 person-id: 3 timestamp: "2026-09-01" date-day: 739860 address: "Example District C (fictional)" source: "fictional-example" }
+    { address-id: 4 person-id: 4 timestamp: "2026-09-01" date-day: 739860 address: "Example District D (fictional)" source: "fictional-example" }
+  ]
+  interaction-log: [
+    { interaction-id: 1 person-id: 1 timestamp: "2026-10-01" date-day: 739890 kind: "meeting" summary: "Fictional review of the community atlas interface" follow-up-date: "" }
+    { interaction-id: 2 person-id: 2 timestamp: "2026-09-10" date-day: 739869 kind: "call" summary: "Fictional discussion of a data import prototype" follow-up-date: "" }
+    { interaction-id: 3 person-id: 3 timestamp: "2026-07-01" date-day: 739798 kind: "message" summary: "Fictional workshop planning conversation" follow-up-date: "" }
+    { interaction-id: 4 person-id: 4 timestamp: "2026-09-29" date-day: 739888 kind: "note" summary: "Fictional documentation handoff before archiving" follow-up-date: "" }
+  ]
+  relationship: [
+    { relationship-id: 1 from-person-id: 1 to-person-id: 2 kind: "collaborator" strength: "strong" note: "Fictional interface prototype partners" }
+    { relationship-id: 2 from-person-id: 1 to-person-id: 3 kind: "friend" strength: "normal" note: "Fictional workshop connection" }
+    { relationship-id: 3 from-person-id: 2 to-person-id: 5 kind: "research collaborator" strength: "normal" note: "Fictional visualization experiment" }
+    { relationship-id: 4 from-person-id: 3 to-person-id: 4 kind: "collaborator" strength: "normal" note: "Fictional workshop guide" }
+    { relationship-id: 5 from-person-id: 4 to-person-id: 5 kind: "professional" strength: "weak" note: "Fictional atlas documentation review" }
+  ]
+  lifecycle-policy: [
+    { status: "active" max-days-since-contact: 14 reminder-kind: "note" note: "Recent contact" }
+    { status: "needs-catchup" max-days-since-contact: 45 reminder-kind: "message" note: "Consider a follow-up" }
+    { status: "inactive" max-days-since-contact: 9999 reminder-kind: "message" note: "Consider reconnecting" }
+  ]
+  lifecycle-transition: [
+    { from-status: "active" event-kind: "contacted" to-status: "active" }
+    { from-status: "active" event-kind: "reconnected" to-status: "active" }
+    { from-status: "active" event-kind: "archived" to-status: "archived" }
+    { from-status: "needs-catchup" event-kind: "contacted" to-status: "active" }
+    { from-status: "needs-catchup" event-kind: "reconnected" to-status: "active" }
+    { from-status: "needs-catchup" event-kind: "archived" to-status: "archived" }
+    { from-status: "inactive" event-kind: "contacted" to-status: "active" }
+    { from-status: "inactive" event-kind: "reconnected" to-status: "active" }
+    { from-status: "inactive" event-kind: "archived" to-status: "archived" }
+    { from-status: "archived" event-kind: "reconnected" to-status: "active" }
+  ]
+  lifecycle-event: [
+    { event-id: 1 person-id: 1 timestamp: "2026-10-01" date-day: 739890 event-kind: "contacted" note: "Fictional design review" }
+    { event-id: 2 person-id: 2 timestamp: "2026-09-10" date-day: 739869 event-kind: "contacted" note: "Fictional prototype discussion" }
+    { event-id: 3 person-id: 3 timestamp: "2026-07-01" date-day: 739798 event-kind: "contacted" note: "Fictional workshop planning" }
+    { event-id: 4 person-id: 4 timestamp: "2026-09-29" date-day: 739888 event-kind: "archived" note: "Fictional archived profile example" }
+  ]
+}
+
+config := {
+  runtime: { name: "people-relationship-manager" limits: { max-turn-duration-ms: 2000 } }
+  run: { paths: [".generated/people-runtime.mec"] grants: [] }
+}
