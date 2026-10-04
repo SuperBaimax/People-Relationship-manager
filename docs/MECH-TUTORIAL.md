@@ -13,7 +13,7 @@ node tools/build-mech.cjs
 mech .generated/people-runtime.mec
 ```
 
-The first command reads the database and generates a Mech program. The second executes that program. With the supplied database, its final result has **10 rows**, one per person-to-attribute assignment.
+The first command reads the database and generates a Mech program. The second executes that program. With a fresh copy of the supplied ten-person example database, its final result has **20 rows**, one per person-to-attribute assignment. An existing local database may produce a different count; it is never overwritten by an update.
 
 You can also run the smaller example:
 

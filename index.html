@@ -38,9 +38,24 @@
               <p class="eyebrow">Relationship graph</p>
               <h2 id="map-title">People network</h2>
             </div>
-            <span class="map-hint">Click a node to edit</span>
+            <button id="map-expand" class="button quiet" type="button" aria-expanded="false">Expand map</button>
           </div>
-          <div id="relationship-map" class="relationship-map" aria-live="polite"></div>
+          <div class="map-search">
+            <label for="map-search">Find a person</label>
+            <input id="map-search" type="search" placeholder="Type a name…" autocomplete="off" aria-controls="map-results" />
+            <ul id="map-results" class="map-results" hidden></ul>
+            <span id="map-search-status" class="map-help" role="status"></span>
+          </div>
+          <div class="map-controls" aria-label="Map controls">
+            <button id="map-zoom-out" class="button secondary" type="button" aria-label="Zoom out">−</button>
+            <output id="map-zoom" aria-label="Map zoom">100%</output>
+            <button id="map-zoom-in" class="button secondary" type="button" aria-label="Zoom in">+</button>
+            <button id="map-fit" class="button secondary" type="button">Fit all</button>
+            <button id="map-center" class="button secondary" type="button">Find selected</button>
+            <button id="map-arrange" class="button quiet" type="button">Rearrange</button>
+          </div>
+          <p id="map-help" class="map-help">Drag the background to pan; drag a person to move them. Scroll or pinch to zoom. Click a person to edit. Keyboard: arrows to pan, +/− to zoom, F to fit.</p>
+          <div id="relationship-map" class="relationship-map" tabindex="0" role="region" aria-label="Interactive people network" aria-describedby="map-help"></div>
         </section>
 
         <aside id="person-panel" class="person-panel" aria-labelledby="person-name"></aside>
@@ -52,6 +67,7 @@
       </footer>
     </main>
     <script src="database.js"></script>
+    <script src="network-map.js"></script>
     <script src="app.js"></script>
   </body>
 </html>

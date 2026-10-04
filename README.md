@@ -4,9 +4,18 @@ A Mech-based personal relationship management system for modeling people, attrib
 
 New to this code? Start with the [Mech and MCFG tutorial](docs/MECH-TUTORIAL.md) and its [small runnable attribute-join example](examples/attribute-join.mec).
 
-This is an approved public source snapshot. It includes the working local app, startup launcher, tutorial, and fictional examples. Development history, personal working databases, exports, and backups are not included.
+This is an approved public source snapshot. It includes the working local app, interactive map, startup launcher, tutorial, and ten fictional examples. Development history, personal working databases, exports, and backups are not included.
 
-The tracked demo contains **five fictional people**: Mira Vale, Jonah Reed, Sana Brooks, Theo Hart, and Elena Moss. Their biographies and locations are invented; no real birthdays are included. The server initializes an untracked `people.mcfg` from `examples/people.example.mcfg` on first launch. Existing local databases are never replaced automatically, and personal edits are not committed.
+The tracked demo contains **10 fictional people**, with 20 attribute assignments and 12 connections. Their biographies and locations are invented; no real birthdays are included. The server initializes an untracked `people.mcfg` from `examples/people.example.mcfg` on first launch. Existing local databases are never replaced automatically, and personal edits are not committed.
+
+## What works now
+
+- Interactive relationship map: pan, drag nodes, zoom, expand, fit, and name search.
+- Editable profiles, shared attributes, connections, interactions, and lifecycle actions.
+- Local MCFG database with automatic backups and Mech-calculated views.
+- Portable MCFG import/export and a Windows startup launcher.
+
+Start with [Run the working app](#run-the-working-app), explore the [fictional demo](#fictional-demo), or learn the data model in the [Mech tutorial](docs/MECH-TUTORIAL.md).
 
 ## Run the working app
 
@@ -28,6 +37,47 @@ No npm installation, manual export, or separate build is needed for normal use.
 - Each successful save first backs up the old file under `.backups/people.mcfg/`. Exports remain useful as portable copies.
 
 This is a local, single-user app, not an internet-ready service. Do not expose its port publicly.
+
+### Navigate the people map
+
+- Drag the background to pan, or drag individual people to arrange them. Connections follow their endpoints.
+- Use the mouse wheel, trackpad, touch pinch, or **+/−** buttons to zoom. **Fit all** brings the whole network back into view.
+- **Expand map** gives the network the full workspace width, with the editing panel below. Collapse restores the side-by-side layout.
+- Type a name in **Find a person**, then choose a result (or press Enter for the first match). The map centers and zooms to that person and opens their profile. Results show IDs to distinguish duplicate names.
+- **Find selected** returns to the selected person. **Rearrange** resets positions to a spaced, connection-ordered layout without overlapping cards.
+- Keyboard: focus the map and use arrow keys to pan, **+/−** to zoom, and **F** to fit. Search results support arrow keys and Enter; nodes are also reachable with Tab.
+
+Map positions and zoom are temporary presentation state: they survive profile edits and database reloads within the page, but reset when the page is refreshed. Moving nodes never changes person records or relationships. Newly added people can be found with **Find selected** or **Fit all**.
+
+### Fictional demo
+
+| ID | Name | Example role |
+| --- | --- | --- |
+| 1 | Mira Vale | Interface designer |
+| 2 | Jonah Reed | Software developer |
+| 3 | Sana Brooks | Workshop organizer |
+| 4 | Theo Hart | Technical writer (archived) |
+| 5 | Elena Moss | Visualization researcher |
+| 6 | Rowan Pike | Accessibility reviewer |
+| 7 | Nadia Finch | Workshop facilitator |
+| 8 | Felix Wren | Atlas developer |
+| 9 | Iris Quinn | Project coordinator (archived) |
+| 10 | Owen Alder | Visualization student |
+
+All 10 profiles are connected into one example network. They share catalog attributes through ID links rather than duplicate attribute records. Contact-health labels vary with the current UTC date; Elena and Owen demonstrate missing contact history.
+
+Already have a local database? Updating the code does **not** replace it with these examples. To preview the new demo safely in PowerShell, run a separate instance:
+
+```powershell
+New-Item -ItemType Directory -Force .generated | Out-Null
+$demo = Join-Path (Resolve-Path .generated).Path ("demo-" + [guid]::NewGuid() + ".mcfg")
+Copy-Item examples/people.example.mcfg $demo
+$env:PRM_DATABASE = $demo
+$env:PORT = '8081'
+node server.cjs
+```
+
+Open `http://127.0.0.1:8081`. Use a new terminal for the normal app afterward, so it does not inherit these demo environment variables.
 
 This project starts from a simple idea: personal and professional networks are dynamic, but most tools treat them like static notes. People move, preferences change, contact goes stale, and relationships need different kinds of attention over time. The goal is to build a small, understandable CRM that uses [Mech](https://github.com/mech-lang) - a language for data-driven, reactive systems - as the database and behavior layer.
 
@@ -63,7 +113,7 @@ That makes it a good research fit for this project because a relationship manage
 .
 +-- person.mec   # Mech schema, join, and contact-health functions
 +-- people.mcfg  # Local working records (Git-ignored)
-+-- examples/people.example.mcfg # Five fictional profiles for clean installations
++-- examples/people.example.mcfg # Ten fictional profiles for clean installations
 +-- database.js  # MCFG reader/writer, validation, and table conversion
 +-- tools/build-mech.cjs # Build a Mech program from the stored records
 +-- tools/mech-engine.cjs # Run Mech and decode website views
@@ -72,6 +122,7 @@ That makes it a good research fit for this project because a relationship manage
 +-- docs/MECH-TUTORIAL.md # Syntax, data flow, joins, and exercises
 +-- index.html   # Browser workspace
 +-- app.js       # Browser data and UI logic
++-- network-map.js # Interactive graph, layout, and search
 +-- README.md    # Project overview and roadmap
 +-- LICENSE
 ```
@@ -95,7 +146,8 @@ The browser workspace uses:
 
 - `index.html`: page structure and accessible regions.
 - `styles.css`: responsive mind-map layout and visual styling.
-- `app.js`: forms, graph rendering, and requests to the local API.
+- `app.js`: forms and requests to the local API.
+- `network-map.js`: interactive graph, layout, name search, and camera controls (no external dependencies).
 - `database.js`: a shared browser/Node adapter for the application's static MCFG data format.
 - `people.mcfg`: editable records, ID links, histories, lifecycle policies, and runtime settings.
 

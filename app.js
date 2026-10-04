@@ -20,6 +20,7 @@ let needsReload = true;
 let failedDraft = null;
 
 const map = document.querySelector("#relationship-map");
+const networkMap = new PeopleNetworkMap(map, selectPerson);
 const panel = document.querySelector("#person-panel");
 const saveMessage = document.querySelector("#save-message");
 
@@ -210,47 +211,8 @@ function derivedPerson(person) {
   return { ...person, ...views.people.find((view) => view.id === person.id) };
 }
 
-function nodePosition(index, total) {
-  if (total === 1) return { x: 50, y: 50 };
-  const angle = -Math.PI / 2 + (index * Math.PI * 2) / total;
-  const radius = total === 2 ? 27 : Math.min(35, 19 + total * 2.5);
-  return {
-    x: 50 + Math.cos(angle) * radius,
-    y: 50 + Math.sin(angle) * radius,
-  };
-}
-
 function renderMap() {
-  if (!state.people.length) {
-    map.innerHTML = '<div class="empty-state">No people yet. Add your first person.</div>';
-    return;
-  }
-
-  const positions = new Map(state.people.map((person, index) => [person.id, nodePosition(index, state.people.length)]));
-  const lines = state.relationships
-    .filter((relationship) => positions.has(relationship.from) && positions.has(relationship.to))
-    .map((relationship) => {
-      const from = positions.get(relationship.from);
-      const to = positions.get(relationship.to);
-      const selected = relationship.from === selectedId || relationship.to === selectedId;
-      return `<line class="map-line${selected ? " is-selected" : ""}" x1="${from.x}%" y1="${from.y}%" x2="${to.x}%" y2="${to.y}%" />`;
-    }).join("");
-
-  const nodes = state.people.map((person, index) => {
-    const current = derivedPerson(person);
-    const position = nodePosition(index, state.people.length);
-    return `
-      <button class="person-node${person.id === selectedId ? " is-selected" : ""}" style="left:${position.x}%;top:${position.y}%" data-person-id="${person.id}" type="button" aria-label="Edit ${escapeHtml(person.name)}">
-        <span class="node-name">${escapeHtml(person.name || "Unnamed person")}</span>
-        <span class="node-status">${escapeHtml(current.status)}</span>
-      </button>
-    `;
-  }).join("");
-
-  map.innerHTML = `<svg class="map-lines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">${lines}</svg>${nodes}`;
-  map.querySelectorAll(".person-node").forEach((node) => {
-    node.addEventListener("click", () => selectPerson(Number(node.dataset.personId)));
-  });
+  networkMap.setData(state.people.map(derivedPerson), state.relationships, selectedId);
 }
 
 function renderPanel(person) {

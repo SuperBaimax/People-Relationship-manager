@@ -7,6 +7,11 @@ database := {
     { person-id: 3 name: "Sana Brooks" status: "active" birthdate: "" background: "Fictional community workshop organizer" }
     { person-id: 4 name: "Theo Hart" status: "archived" birthdate: "" background: "Fictional technical writer; archived example" }
     { person-id: 5 name: "Elena Moss" status: "active" birthdate: "" background: "Fictional visualization researcher; no contact history yet" }
+    { person-id: 6 name: "Rowan Pike" status: "active" birthdate: "" background: "Fictional accessibility reviewer at Example Studio" }
+    { person-id: 7 name: "Nadia Finch" status: "active" birthdate: "" background: "Fictional workshop facilitator at Example Lab" }
+    { person-id: 8 name: "Felix Wren" status: "active" birthdate: "" background: "Fictional atlas developer and documentation volunteer" }
+    { person-id: 9 name: "Iris Quinn" status: "archived" birthdate: "" background: "Fictional project coordinator; archived example" }
+    { person-id: 10 name: "Owen Alder" status: "active" birthdate: "" background: "Fictional data visualization student; no contact history yet" }
   ]
   attribute: [
     { attribute-id: 1 category: "skill" value: "Interface design" }
@@ -29,18 +34,36 @@ database := {
     { person-id: 4 attribute-id: 8 source: "fictional-example" confidence: 1 }
     { person-id: 5 attribute-id: 7 source: "fictional-example" confidence: 1 }
     { person-id: 5 attribute-id: 8 source: "fictional-example" confidence: 1 }
+    { person-id: 6 attribute-id: 1 source: "fictional-example" confidence: 1 }
+    { person-id: 6 attribute-id: 4 source: "fictional-example" confidence: 1 }
+    { person-id: 7 attribute-id: 3 source: "fictional-example" confidence: 1 }
+    { person-id: 7 attribute-id: 5 source: "fictional-example" confidence: 1 }
+    { person-id: 8 attribute-id: 2 source: "fictional-example" confidence: 1 }
+    { person-id: 8 attribute-id: 6 source: "fictional-example" confidence: 1 }
+    { person-id: 9 attribute-id: 3 source: "fictional-example" confidence: 1 }
+    { person-id: 9 attribute-id: 8 source: "fictional-example" confidence: 1 }
+    { person-id: 10 attribute-id: 7 source: "fictional-example" confidence: 1 }
+    { person-id: 10 attribute-id: 8 source: "fictional-example" confidence: 1 }
   ]
   address-log: [
     { address-id: 1 person-id: 1 timestamp: "2026-09-01" date-day: 739860 address: "Example District A (fictional)" source: "fictional-example" }
     { address-id: 2 person-id: 2 timestamp: "2026-09-01" date-day: 739860 address: "Example District B (fictional)" source: "fictional-example" }
     { address-id: 3 person-id: 3 timestamp: "2026-09-01" date-day: 739860 address: "Example District C (fictional)" source: "fictional-example" }
     { address-id: 4 person-id: 4 timestamp: "2026-09-01" date-day: 739860 address: "Example District D (fictional)" source: "fictional-example" }
+    { address-id: 5 person-id: 6 timestamp: "2026-09-01" date-day: 739860 address: "Example District E (fictional)" source: "fictional-example" }
+    { address-id: 6 person-id: 7 timestamp: "2026-09-01" date-day: 739860 address: "Example District F (fictional)" source: "fictional-example" }
+    { address-id: 7 person-id: 8 timestamp: "2026-09-01" date-day: 739860 address: "Example District G (fictional)" source: "fictional-example" }
+    { address-id: 8 person-id: 9 timestamp: "2026-09-01" date-day: 739860 address: "Example District H (fictional)" source: "fictional-example" }
   ]
   interaction-log: [
     { interaction-id: 1 person-id: 1 timestamp: "2026-10-01" date-day: 739890 kind: "meeting" summary: "Fictional review of the community atlas interface" follow-up-date: "" }
     { interaction-id: 2 person-id: 2 timestamp: "2026-09-10" date-day: 739869 kind: "call" summary: "Fictional discussion of a data import prototype" follow-up-date: "" }
     { interaction-id: 3 person-id: 3 timestamp: "2026-07-01" date-day: 739798 kind: "message" summary: "Fictional workshop planning conversation" follow-up-date: "" }
     { interaction-id: 4 person-id: 4 timestamp: "2026-09-29" date-day: 739888 kind: "note" summary: "Fictional documentation handoff before archiving" follow-up-date: "" }
+    { interaction-id: 5 person-id: 6 timestamp: "2026-10-01" date-day: 739890 kind: "meeting" summary: "Fictional accessibility review of the atlas" follow-up-date: "" }
+    { interaction-id: 6 person-id: 7 timestamp: "2026-09-10" date-day: 739869 kind: "call" summary: "Fictional workshop agenda planning" follow-up-date: "" }
+    { interaction-id: 7 person-id: 8 timestamp: "2026-07-01" date-day: 739798 kind: "message" summary: "Fictional discussion of the atlas data model" follow-up-date: "" }
+    { interaction-id: 8 person-id: 9 timestamp: "2026-09-29" date-day: 739888 kind: "note" summary: "Fictional project handoff before archiving" follow-up-date: "" }
   ]
   relationship: [
     { relationship-id: 1 from-person-id: 1 to-person-id: 2 kind: "collaborator" strength: "strong" note: "Fictional interface prototype partners" }
@@ -48,6 +71,13 @@ database := {
     { relationship-id: 3 from-person-id: 2 to-person-id: 5 kind: "research collaborator" strength: "normal" note: "Fictional visualization experiment" }
     { relationship-id: 4 from-person-id: 3 to-person-id: 4 kind: "collaborator" strength: "normal" note: "Fictional workshop guide" }
     { relationship-id: 5 from-person-id: 4 to-person-id: 5 kind: "professional" strength: "weak" note: "Fictional atlas documentation review" }
+    { relationship-id: 6 from-person-id: 1 to-person-id: 6 kind: "collaborator" strength: "strong" note: "Fictional accessibility design partnership" }
+    { relationship-id: 7 from-person-id: 3 to-person-id: 7 kind: "collaborator" strength: "strong" note: "Fictional workshop co-organizers" }
+    { relationship-id: 8 from-person-id: 2 to-person-id: 8 kind: "collaborator" strength: "normal" note: "Fictional atlas development partners" }
+    { relationship-id: 9 from-person-id: 4 to-person-id: 9 kind: "professional" strength: "normal" note: "Fictional documentation handoff" }
+    { relationship-id: 10 from-person-id: 5 to-person-id: 10 kind: "research collaborator" strength: "normal" note: "Fictional visualization study" }
+    { relationship-id: 11 from-person-id: 6 to-person-id: 7 kind: "friend" strength: "normal" note: "Fictional community meetup connection" }
+    { relationship-id: 12 from-person-id: 8 to-person-id: 10 kind: "collaborator" strength: "weak" note: "Fictional data chart prototype" }
   ]
   lifecycle-policy: [
     { status: "active" max-days-since-contact: 14 reminder-kind: "note" note: "Recent contact" }
@@ -71,6 +101,10 @@ database := {
     { event-id: 2 person-id: 2 timestamp: "2026-09-10" date-day: 739869 event-kind: "contacted" note: "Fictional prototype discussion" }
     { event-id: 3 person-id: 3 timestamp: "2026-07-01" date-day: 739798 event-kind: "contacted" note: "Fictional workshop planning" }
     { event-id: 4 person-id: 4 timestamp: "2026-09-29" date-day: 739888 event-kind: "archived" note: "Fictional archived profile example" }
+    { event-id: 5 person-id: 6 timestamp: "2026-10-01" date-day: 739890 event-kind: "contacted" note: "Fictional accessibility review" }
+    { event-id: 6 person-id: 7 timestamp: "2026-09-10" date-day: 739869 event-kind: "contacted" note: "Fictional workshop agenda planning" }
+    { event-id: 7 person-id: 8 timestamp: "2026-07-01" date-day: 739798 event-kind: "contacted" note: "Fictional atlas model discussion" }
+    { event-id: 8 person-id: 9 timestamp: "2026-09-29" date-day: 739888 event-kind: "archived" note: "Fictional archived coordinator example" }
   ]
 }
 

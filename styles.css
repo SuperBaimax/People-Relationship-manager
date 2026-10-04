@@ -145,6 +145,8 @@ h3 {
 }
 
 .map-card {
+  min-width: 0;
+  align-self: start;
   min-height: 590px;
   padding: 26px;
 }
@@ -157,6 +159,12 @@ h3 {
 .relationship-map {
   position: relative;
   min-height: 500px;
+  height: 60vh;
+  max-height: 800px;
+  touch-action: none;
+  cursor: grab;
+  user-select: none;
+  overscroll-behavior: contain;
   margin-top: 20px;
   overflow: hidden;
   border: 1px solid rgb(48 66 82 / 70%);
@@ -187,15 +195,15 @@ h3 {
 .map-lines {
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
+  width: 1px;
+  height: 1px;
+  overflow: visible;
   pointer-events: none;
 }
 
 .map-line {
   stroke: #668694;
-  stroke-width: 0.6;
-  stroke-dasharray: 2 1.5;
+  stroke-width: 1.5;
   vector-effect: non-scaling-stroke;
 }
 
@@ -208,7 +216,8 @@ h3 {
 .person-node {
   position: absolute;
   z-index: 1;
-  width: 190px;
+  width: 200px;
+  height: 90px;
   padding: 17px;
   color: var(--text);
   text-align: left;
@@ -216,9 +225,9 @@ h3 {
   border-radius: 16px;
   background: linear-gradient(145deg, #243541, #1b2732);
   box-shadow: 0 12px 26px rgb(0 0 0 / 24%);
-  cursor: pointer;
+  cursor: grab;
   transform: translate(-50%, -50%);
-  transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+  transition: border-color 160ms ease, box-shadow 160ms ease;
 }
 
 .person-node:hover,
@@ -227,14 +236,43 @@ h3 {
   border-color: var(--accent);
   box-shadow: 0 0 0 3px rgb(114 214 195 / 13%), 0 14px 30px rgb(0 0 0 / 30%);
   outline: none;
-  transform: translate(-50%, -50%) scale(1.03);
+  transform: translate(-50%, -50%);
 }
 
-.person-node[data-person-id="1"] { left: 50%; top: 50%; }
-.person-node[data-person-id="2"] { left: 23%; top: 31%; }
-.person-node[data-person-id="3"] { left: 77%; top: 69%; }
+.map-world {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  transform-origin: 0 0;
+}
+
+.relationship-map:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.relationship-map.is-dragging,
+.relationship-map.is-dragging .person-node { cursor: grabbing; }
+
+.map-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 16px; }
+.map-controls output { min-width: 42px; text-align: center; font-variant-numeric: tabular-nums; }
+.map-help { color: var(--muted); font-size: 0.78rem; line-height: 1.5; }
+.map-search { margin-top: 18px; }
+.map-search label { display: block; margin-bottom: 6px; color: var(--muted); }
+.map-search input { width: 100%; padding: 12px; color: var(--text); background: #121c25; border: 1px solid var(--border); border-radius: 10px; font: inherit; }
+.map-search input:focus { outline: 2px solid var(--accent); outline-offset: 2px; }
+.map-results { list-style: none; margin: 6px 0; padding: 4px; max-height: 200px; overflow-y: auto; border: 1px solid var(--border); border-radius: 10px; }
+.map-results button { display: block; width: 100%; padding: 10px; border: 0; border-radius: 6px; text-align: left; color: var(--text); background: transparent; cursor: pointer; }
+.map-results button:hover, .map-results button:focus-visible { background: var(--surface-raised); outline: 2px solid var(--accent); outline-offset: -2px; }
+.workspace.is-map-expanded { grid-template-columns: 1fr; }
+.workspace.is-map-expanded .relationship-map { height: 75vh; max-height: none; }
 
 .node-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   display: block;
   margin-bottom: 7px;
   font-size: 1.02rem;
@@ -406,13 +444,6 @@ code {
     min-height: 430px;
   }
 
-  .person-node {
-    width: 145px;
-    padding: 12px;
-  }
-
-  .person-node[data-person-id="2"] { left: 24%; top: 25%; }
-  .person-node[data-person-id="3"] { left: 76%; top: 75%; }
 }
 
 .header-tools {

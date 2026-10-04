@@ -15,6 +15,7 @@ const staticFiles = new Map([
   ["/", ["index.html", "text/html"]], ["/index.html", ["index.html", "text/html"]],
   ["/app.js", ["app.js", "text/javascript"]], ["/database.js", ["database.js", "text/javascript"]],
   ["/styles.css", ["styles.css", "text/css"]],
+  ["/network-map.js", ["network-map.js", "text/javascript"]],
 ]);
 let queue = Promise.resolve();
 
